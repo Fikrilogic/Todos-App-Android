@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Todo Apps</string>
+
+
+    <string name="default_string">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et semper enim. Aliquam id nunc magna. Pellentesque tortor leo, tempor in ligula ac, gravida lacinia quam. Suspendisse ullamcorper orci vel euismod tempor. Cras aliquam eget augue at lacinia. Nulla dui neque, facilisis sed accumsan eget, sodales ut arcu.
+    </string>
+</resources>
