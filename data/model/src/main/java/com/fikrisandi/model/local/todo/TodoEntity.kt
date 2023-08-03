@@ -9,7 +9,7 @@ data class TodoEntity(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") var description: String,
-    @ColumnInfo(name = "due_date") var dueDate: String,
+    @ColumnInfo(name = "due_date") var dueDate: Long,
 ){
     companion object{
         const val NAME = "Todo"

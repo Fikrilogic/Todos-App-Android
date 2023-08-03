@@ -152,6 +152,12 @@ fun DependencyHandler.addDestinationDependency() {
 
 fun DependencyHandler.addModule(){
     FRAMEWORK
+    THEME
+    COMPONENT
+    UTILS
+    HOME
+    TODO
+
 }
 
 val DependencyHandler.THEME
@@ -162,8 +168,6 @@ val DependencyHandler.PROVIDER
 val DependencyHandler.COMPONENT
     get() = implementation(project(mapOf("path" to ":commons:component")))
 
-val DependencyHandler.HOME
-    get() = implementation(project(mapOf("path" to ":feature:home")))
 val DependencyHandler.FRAMEWORK
     get() = implementation(project(mapOf("path" to ":library:framework")))
 val DependencyHandler.JETFRAMEWORK
@@ -179,3 +183,8 @@ val DependencyHandler.REPOSITORY
     get() = implementation(project(mapOf("path" to ":data:repository")))
 val DependencyHandler.DOMAIN
     get() = implementation(project(mapOf("path" to ":domain")))
+
+val DependencyHandler.HOME
+    get() = implementation(project(mapOf("path" to ":feature:home")))
+val DependencyHandler.TODO
+    get() = implementation(project(mapOf("path" to ":feature:todo")))

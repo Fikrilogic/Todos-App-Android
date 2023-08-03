@@ -1,3 +1,5 @@
+import extension.addUiDependency
+
 plugins {
     id("commons.android-core")
     id("commons.android-compose")
@@ -9,5 +11,5 @@ android{
 
 
 dependencies {
-
+    addUiDependency()
 }

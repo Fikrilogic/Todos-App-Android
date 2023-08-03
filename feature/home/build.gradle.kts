@@ -11,6 +11,11 @@ android {
     namespace = "com.fikrisandi.home"
 }
 
+ksp{
+    arg("compose-destinations.mode", "navgraphs")
+    arg("compose-destinations.moduleName", "home")
+}
+
 dependencies {
     JETFRAMEWORK
     FRAMEWORK
@@ -19,6 +24,7 @@ dependencies {
     PROVIDER
     THEME
     COMPONENT
+    TODO
 
     addPaging3Dependency()
     addDestinationDependency()

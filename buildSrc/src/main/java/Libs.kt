@@ -3,7 +3,7 @@ object SupportLibs {
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycleRuntime}"
     const val CoroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.coroutine}"
     const val CoroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.coroutine}"
-    const val Material = "com.google.android.material:material:${Version.coroutine}"
+    const val Material = "com.google.android.material:material:1.11.0-alpha01"
     const val ActivityKtx = "androidx.activity:activity-ktx:1.4.0"
     const val viewmodelRuntime = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.lifecycleRuntime}"
 }

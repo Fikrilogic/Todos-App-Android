@@ -1,6 +1,5 @@
 package com.fikrisandi.component.widget
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,18 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,20 +31,15 @@ import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosTypography
 
-
 @Composable
-fun CardTodosVerticalWidget(
+fun TodosCardHorizontalWidget(
     modifier: Modifier = Modifier,
     title: String,
-    date: String,
-    description: String
+    description: String,
+    days: String,
+    time: String
 ) {
-    OutlinedCard(
-        modifier = modifier
-            .padding(8.dp)
-            .wrapContentHeight(),
-        border = BorderStroke(2.dp, color = TodosColors.primary)
-    ) {
+    OutlinedCard(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -65,26 +55,24 @@ fun CardTodosVerticalWidget(
             ) {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(.4f)
                 ) {
                     Text(text = title, style = TodosTypography.titleLarge)
-                    Text(text = date, style = TodosTypography.titleSmall)
+                    Text(
+                        text = description,
+                        style = TodosTypography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
 
-                Column(modifier = Modifier
-                    .wrapContentSize()
-                    .padding(8.dp)) {
-                    Box(
-                        modifier = Modifier
-                            .sizeIn(maxWidth = 70.dp, maxHeight = 70.dp)
-                            .clip(CircleShape)
-                            .background(color = TodosColors.primary)
-                            .padding(8.dp), contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_todos_people),
-                            contentDescription = "todos_icon"
-                        )
-                    }
+                Column(
+                    modifier = Modifier
+                        .weight(.2f),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Icon(painter = painterResource(R.drawable.ic_circle_check), contentDescription = "Completed", tint = TodosColors.secondary)
                 }
             }
 
@@ -95,39 +83,38 @@ fun CardTodosVerticalWidget(
                     .background(color = TodosColors.primary)
             )
 
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Description",
-                    style = TodosTypography.labelMedium.copy(color = TodosColors.scrim.copy(alpha = .5f))
+                    text = days,
+                    style = TodosTypography.bodySmall,
                 )
                 Text(
-                    text = description,
+                    text = time,
                     style = TodosTypography.bodySmall,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
-
     }
 }
 
 @Composable
 @Preview
-fun CardVerticalWidgetPreview() {
+fun CardHorizontalWidgetPreview() {
     TodoTheme {
-        CardTodosVerticalWidget(
-            modifier = Modifier
-                .width(200.dp)
-                .wrapContentHeight(),
-            title = "Todos Today",
-            date = "12/07/2022",
-            description = stringResource(id = R.string.default_string)
+        TodosCardHorizontalWidget(
+            modifier = Modifier.fillMaxWidth(),
+            title = "Go To Station",
+            time = "11:24",
+            days = "Today",
+            description = stringResource(
+                R.string.default_string
+            )
         )
     }
 }

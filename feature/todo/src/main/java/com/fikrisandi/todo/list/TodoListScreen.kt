@@ -10,22 +10,24 @@ import androidx.paging.PagingData
 import com.fikrisandi.model.dto.todo.TodoDto
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.todo.list.view.TodoListContent
+import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.coroutines.flow.flow
 
 
+@Destination(start = true)
 @Composable
 fun TodoListScreen(modifier: Modifier = Modifier,navController: DestinationsNavigator){
     val listTodo by remember{
         mutableStateOf(
             listOf(
-                TodoDto(id = 1, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
-                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
-                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
-                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
-                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
-                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = "12/02/2023"),
+                TodoDto(id = 1, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
+                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
+                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
+                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
+                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
+                TodoDto(id = 2, title = "Todo Sample", description = "test description data", dueDate = System.currentTimeMillis()),
             )
         )
     }

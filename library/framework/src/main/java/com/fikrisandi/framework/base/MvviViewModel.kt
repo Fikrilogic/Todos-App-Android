@@ -11,7 +11,7 @@ abstract class MvviViewModel<STATE : BaseUiState<*>, EVENT> : MvvmViewModel() {
 
     abstract fun onTrigger(eventType: EVENT)
 
-    protected suspend fun setState(state: STATE) {
+    protected fun setState(state: STATE) = safeLaunch {
         _uiState.emit(state)
     }
 

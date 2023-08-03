@@ -13,7 +13,7 @@ android{
 
 ksp{
     arg("compose-destinations.mode", "navgraphs")
-    arg("compose-destinations.moduleName", "todos")
+    arg("compose-destinations.moduleName", "todo")
 }
 
 dependencies {
