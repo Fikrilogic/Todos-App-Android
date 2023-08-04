@@ -33,6 +33,10 @@ fun HomeScreen(
     }
 
     val uiState by viewModel.uiState.collectAsState()
-    HomeContent(modifier = modifier.fillMaxSize(), uiState)
+    HomeContent(
+        modifier = modifier.fillMaxSize(),
+        uiState,
+        onCreateTodo = { viewModel.onTrigger(HomeEvent.AddNewTodo(it)) }
+    )
 
 }

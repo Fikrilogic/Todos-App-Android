@@ -1,6 +1,7 @@
 package extension
 
 import ComposeLibs
+import DaggerHiltLibs
 import SupportLibs
 import Paging3Libs
 import TestLibs
@@ -129,6 +130,7 @@ fun DependencyHandler.addAndroidTestDependency() {
 
 fun DependencyHandler.addHiltDependency() {
     implementation(DaggerHiltLibs.android)
+    implementation(DaggerHiltLibs.compose)
     kapt(DaggerHiltLibs.compiler)
 }
 
@@ -153,8 +155,10 @@ fun DependencyHandler.addDestinationDependency() {
 fun DependencyHandler.addModule(){
     FRAMEWORK
     THEME
+    PROVIDER
     COMPONENT
     UTILS
+
     HOME
     TODO
 

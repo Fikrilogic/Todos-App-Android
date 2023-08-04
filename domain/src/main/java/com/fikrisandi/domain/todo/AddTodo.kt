@@ -15,5 +15,6 @@ class AddTodo @Inject constructor(val repository: TodoRepository): LocalUseCase<
 
     override suspend fun FlowCollector<Unit>.execute(params: Params) {
         repository.insert(params.todo.toEntity())
+        emit(Unit)
     }
 }

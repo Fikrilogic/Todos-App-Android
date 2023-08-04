@@ -1,24 +1,32 @@
 package com.fikrisandi.todoapps
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.fikrisandi.theme.TodoTheme
-import com.fikrisandi.todoapps.ui.theme.TodoAppsTheme
-import com.ramcosta.composedestinations.DestinationsNavHost
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private var backPressed = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainRootApp()
+            MainRootApp{
+                finishApplication
+            }
         }
+    }
+
+    private val finishApplication: () -> Unit = {
+        if (backPressed + 3000 > System.currentTimeMillis()) {
+            finishAndRemoveTask()
+        } else {
+            Toast.makeText(this, "Press Back Again For Exit", Toast.LENGTH_SHORT)
+        }
+        backPressed = System.currentTimeMillis()
     }
 }

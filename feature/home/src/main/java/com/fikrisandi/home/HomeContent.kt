@@ -34,6 +34,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.fikrisandi.framework.base.BaseUiState
 import com.fikrisandi.framework.extension.cast
+import com.fikrisandi.model.dto.todo.TodoDto
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosTypography
@@ -47,15 +48,16 @@ import kotlinx.coroutines.launch
 fun HomeContent(
     modifier: Modifier = Modifier,
     state: BaseUiState<*>,
-    onClickFloating: () -> Unit = {}
+    onCreateTodo: (TodoDto) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
 
     var openBottomSheet by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var formState by remember{ mutableStateOf(TodoDto()) }
 
     LaunchedEffect(openBottomSheet) {
         if (!openBottomSheet) sheetState.hide() else sheetState.expand()
@@ -144,7 +146,15 @@ fun HomeContent(
                 onDismissRequest = { openBottomSheet = false },
                 sheetState = sheetState
             ) {
-                TodoContentSheetScreen(modifier = Modifier.fillMaxWidth())
+                TodoContentSheetScreen(modifier = Modifier.fillMaxWidth(), onCancel = {openBottomSheet = false}, onSubmit = {todo ->
+                    when{
+                        todo.title.isEmpty() -> {}
+                        todo.dueDateNotSelected() -> {}
+                        else -> {
+                            onCreateTodo.invoke(todo)
+                        }
+                    }
+                })
             }
         }
     }
