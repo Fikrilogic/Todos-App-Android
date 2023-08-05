@@ -158,6 +158,7 @@ fun DependencyHandler.addModule(){
     PROVIDER
     COMPONENT
     UTILS
+    MODEL
 
     HOME
     TODO
