@@ -17,12 +17,12 @@ interface TodoDao: BaseDao<TodoEntity> {
     @Query("SELECT * FROM ${TodoEntity.NAME} WHERE id = :id")
     suspend fun getById(id: Int): TodoEntity?
 
-    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date >= :date  LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date < :date  LIMIT :limit OFFSET :offset")
     suspend fun getIsCompleted(limit: Int, offset: Int, date: Long): List<TodoEntity>
-    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date >= :date")
+    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date < :date")
     suspend fun getIsCompleted(date: Long): List<TodoEntity>
 
-    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date < :date ORDER BY due_date ASC  LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date >= :date ORDER BY due_date ASC  LIMIT :limit OFFSET :offset")
     suspend fun getLastAdded(limit: Int, offset: Int, date: Long): List<TodoEntity>
 
 }
