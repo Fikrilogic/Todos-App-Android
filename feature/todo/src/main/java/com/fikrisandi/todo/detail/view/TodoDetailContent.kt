@@ -17,7 +17,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,7 +34,6 @@ import com.fikrisandi.provider.NavigationProvider
 import com.fikrisandi.theme.R
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
-import com.fikrisandi.theme.TodosShape
 import com.fikrisandi.theme.TodosTypography
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -47,7 +45,8 @@ fun TodoDetailContent(
     modifier: Modifier = Modifier,
     navController: NavigationProvider,
     state: TodoDto,
-    onDeleteClick: () -> Unit = {}
+    onDeleteClick: () -> Unit = {},
+    onUpdateClick: () -> Unit = {},
 ) {
 
     Scaffold(
@@ -137,19 +136,13 @@ fun TodoDetailContent(
                     }
                 }
 
-                Row(
+                TodoDetailActionContent(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    FilledTonalButton(
-                        onClick = onDeleteClick,
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = TodosShape.small
-                    ) {
-                        Text("Delete", style = TodosTypography.labelMedium)
-                    }
-                }
+                        .fillMaxWidth(),
+                    onDeleteClick = onDeleteClick,
+                    onUpdateClick = onUpdateClick,
+                )
+
             }
         }
     }

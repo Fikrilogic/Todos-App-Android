@@ -40,12 +40,13 @@ import com.fikrisandi.theme.TodosTypography
 @Composable
 fun TodoContentSheetScreen(
     modifier: Modifier = Modifier,
+    state: TodoDto? = null,
     onCancel: () -> Unit,
     onSubmit: (TodoDto) -> Unit
 ) {
 
-    val dateState = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-    var formState by remember { mutableStateOf(TodoDto()) }
+    var formState by remember { mutableStateOf(state ?: TodoDto()) }
+    val dateState = rememberDatePickerState(initialDisplayMode = DisplayMode.Input, initialSelectedDateMillis = state?.dueDate)
 
     Scaffold(
         modifier = modifier,
@@ -143,7 +144,10 @@ fun TodoContentSheetScreen(
                             .fillMaxWidth()
                             .weight(.4f), shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text("Create", style = TodosTypography.labelMedium)
+                        Text(
+                            if (state == null) "Create" else "Update",
+                            style = TodosTypography.labelMedium
+                        )
                     }
                 }
             }
@@ -155,6 +159,6 @@ fun TodoContentSheetScreen(
 @Preview
 fun TodoContentSheetScreenPreview() {
     TodoTheme {
-        TodoContentSheetScreen(modifier = Modifier.fillMaxWidth(), {}, {})
+        TodoContentSheetScreen(modifier = Modifier.fillMaxWidth(), state = null, {}, {})
     }
 }

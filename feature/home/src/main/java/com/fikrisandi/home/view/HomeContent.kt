@@ -1,5 +1,6 @@
 package com.fikrisandi.home.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fikrisandi.framework.base.BaseUiState
@@ -53,6 +55,7 @@ fun HomeContent(
     onCreateTodo: (TodoDto) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     var openBottomSheet by remember {
         mutableStateOf(false)
@@ -156,8 +159,12 @@ fun HomeContent(
                     onCancel = { openBottomSheet = false },
                     onSubmit = { todo ->
                         when {
-                            todo.title.isEmpty() -> {}
-                            todo.dueDateNotSelected() -> {}
+                            todo.title.isEmpty() -> {
+                                Toast.makeText(context, "Title Must Not Empty", Toast.LENGTH_SHORT).show()
+                            }
+                            todo.dueDateNotSelected() -> {
+                                Toast.makeText(context, "Date Must Not Empty", Toast.LENGTH_SHORT).show()
+                            }
                             else -> {
                                 onCreateTodo.invoke(todo)
                                 openBottomSheet = false
