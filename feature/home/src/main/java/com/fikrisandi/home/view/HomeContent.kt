@@ -1,6 +1,5 @@
-package com.fikrisandi.home
+package com.fikrisandi.home.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +17,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,16 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.fikrisandi.framework.base.BaseUiState
 import com.fikrisandi.framework.extension.cast
+import com.fikrisandi.home.HomeState
 import com.fikrisandi.model.dto.todo.TodoDto
+import com.fikrisandi.provider.EmptyNavigationProvider
+import com.fikrisandi.provider.NavigationProvider
+import com.fikrisandi.provider.TodoFlagType
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosTypography
 import com.fikrisandi.todo.view.TodoContentSheetScreen
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 
@@ -48,6 +49,7 @@ import kotlinx.coroutines.launch
 fun HomeContent(
     modifier: Modifier = Modifier,
     state: BaseUiState<*>,
+    navController: NavigationProvider = EmptyNavigationProvider(),
     onCreateTodo: (TodoDto) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -57,7 +59,6 @@ fun HomeContent(
     }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var formState by remember{ mutableStateOf(TodoDto()) }
 
     LaunchedEffect(openBottomSheet) {
         if (!openBottomSheet) sheetState.hide() else sheetState.expand()
@@ -66,12 +67,18 @@ fun HomeContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    "Set Your Daily To Do",
-                    style = TodosTypography.headlineLarge
+            TopAppBar(
+                title = {
+                    Text(
+                        "Set Your Daily To Do",
+                        style = TodosTypography.headlineLarge,
+                        color = TodosColors.background
+                    )
+                }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = TodosColors.primary,
+                    titleContentColor = TodosColors.background
                 )
-            })
+            )
         },
         floatingActionButton = {
             Row(
@@ -109,31 +116,29 @@ fun HomeContent(
                 .fillMaxSize()
                 .padding(it), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
-            when (state) {
-                is BaseUiState.Loading -> {}
-                is BaseUiState.Empty -> {}
-                is BaseUiState.Data -> {
-                    val data = state.cast<BaseUiState.Data<HomeState>>()
-                    HomeTodosListHorizontal(
-                        modifier = Modifier.fillMaxWidth(),
-                        data.value.listTodoAdded
-                    )
+            HomeTodosLastAdded(
+                modifier = Modifier.fillMaxWidth(),
+                state,
+                onShowDetailTodo = {
+                    navController.openTodoDetail(it)
+                },
+                onShowMore = {
+                    navController.openTodoList(TodoFlagType.ON_PROGRESS)
                 }
-
-                is BaseUiState.Error -> {}
-            }
+            )
 
             when (state) {
                 is BaseUiState.Loading -> {}
                 is BaseUiState.Empty -> {}
                 is BaseUiState.Data -> {
                     val data = state.cast<BaseUiState.Data<HomeState>>()
-                    HomeTodosCompleteList(
-                        modifier = Modifier.fillMaxWidth(),
-                        listTodo = data.value.listTodoCompleted,
-                    ) {
-
+                    if (data.value.listTodoCompleted.isNotEmpty()) {
+                        HomeTodosCompleteList(
+                            modifier = Modifier.fillMaxWidth(),
+                            listTodo = data.value.listTodoCompleted,
+                            onShowMore = { navController.openTodoList(TodoFlagType.COMPLETED) },
+                            onShowTodoDetail = { navController.openTodoDetail(it) }
+                        )
                     }
                 }
 
@@ -146,15 +151,19 @@ fun HomeContent(
                 onDismissRequest = { openBottomSheet = false },
                 sheetState = sheetState
             ) {
-                TodoContentSheetScreen(modifier = Modifier.fillMaxWidth(), onCancel = {openBottomSheet = false}, onSubmit = {todo ->
-                    when{
-                        todo.title.isEmpty() -> {}
-                        todo.dueDateNotSelected() -> {}
-                        else -> {
-                            onCreateTodo.invoke(todo)
+                TodoContentSheetScreen(
+                    modifier = Modifier.fillMaxWidth(),
+                    onCancel = { openBottomSheet = false },
+                    onSubmit = { todo ->
+                        when {
+                            todo.title.isEmpty() -> {}
+                            todo.dueDateNotSelected() -> {}
+                            else -> {
+                                onCreateTodo.invoke(todo)
+                                openBottomSheet = false
+                            }
                         }
-                    }
-                })
+                    })
             }
         }
     }
@@ -163,6 +172,7 @@ fun HomeContent(
 @Composable
 @Preview
 fun HomeContentPreview() {
+
     TodoTheme {
         HomeContent(modifier = Modifier.fillMaxSize(), BaseUiState.Data<HomeState>(HomeState()))
     }

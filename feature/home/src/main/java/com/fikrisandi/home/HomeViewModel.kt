@@ -13,20 +13,25 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getListPagingTodo: GetListPagingTodo, private val getListTodo: GetListTodo, private val addTodo: AddTodo) : MvviViewModel<BaseUiState<HomeState>,HomeEvent>() {
-
+class HomeViewModel @Inject constructor(
+    private val getListPagingTodo: GetListPagingTodo,
+    private val getListTodo: GetListTodo,
+    private val addTodo: AddTodo
+) : MvviViewModel<BaseUiState<HomeState>, HomeEvent>() {
 
     private val config = PagingConfig(initialLoadSize = 5, prefetchDistance = 5, pageSize = 20)
     override fun onTrigger(eventType: HomeEvent) {
-        when(eventType){
+        when (eventType) {
             is HomeEvent.LoadTodoCompleted -> {
                 loadListTodoCompleted()
             }
+
             is HomeEvent.LoadTodosAdded -> {
                 loadListTodoAdded()
             }
-            is HomeEvent.AddNewTodo ->{
-                addNewTodo(eventType.todo)
+
+            is HomeEvent.AddNewTodo -> {
+                addNewTodo(eventType.todo, eventType.callback)
             }
         }
     }
@@ -36,10 +41,21 @@ class HomeViewModel @Inject constructor(private val getListPagingTodo: GetListPa
         val params = GetListTodo.Params(
             isCompleted = true
         )
+        val existData = (uiState.value as? BaseUiState.Data<HomeState>)?.value
+
         call(
             getListTodo(params)
-        ){
-            setState(BaseUiState.Data(HomeState(listTodoCompleted = it)))
+        ) {
+            when (existData) {
+                null -> {
+                    setState(BaseUiState.Data(HomeState(listTodoCompleted = it)))
+                }
+
+                else -> {
+                    setState(BaseUiState.Data(existData.copy(listTodoCompleted = it)))
+                }
+            }
+
         }
     }
 
@@ -51,12 +67,24 @@ class HomeViewModel @Inject constructor(private val getListPagingTodo: GetListPa
                 "lastAdded" to true
             )
         )
+        val existData = (uiState.value as? BaseUiState.Data<HomeState>)?.value
         val flowData = getListPagingTodo(params).cachedIn(viewModelScope)
-        setState(BaseUiState.Data(HomeState(listTodoAdded = flowData)))
+
+        when (existData) {
+            null -> {
+                setState(BaseUiState.Data(HomeState(listTodoAdded = flowData)))
+            }
+
+            else -> {
+                setState(BaseUiState.Data(existData.copy(listTodoAdded = flowData)))
+            }
+        }
     }
 
-    private fun addNewTodo(todo: TodoDto) = safeLaunch {
+    private fun addNewTodo(todo: TodoDto, callback: () -> Unit) = safeLaunch {
         val params = AddTodo.Params(todo)
-        call(addTodo(params)){}
+        call(addTodo(params)) {
+            callback.invoke()
+        }
     }
 }

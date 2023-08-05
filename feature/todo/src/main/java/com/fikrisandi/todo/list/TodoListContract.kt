@@ -11,5 +11,7 @@ data class TodoListState(
 )
 
 sealed class TodoListEvent{
-
+    object LoadTodoLastAdded: TodoListEvent()
+    object LoadTodoCompleted: TodoListEvent()
+    data class CreateNewTodo(val todo: TodoDto): TodoListEvent()
 }

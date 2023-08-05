@@ -99,7 +99,7 @@ fun TodosCardVerticalWidget(
             ) {
                 Text(
                     text = "Description",
-                    style = TodosTypography.labelMedium.copy(color = TodosColors.scrim.copy(alpha = .5f))
+                    style = TodosTypography.labelMedium,
                 )
                 Text(
                     text = description,

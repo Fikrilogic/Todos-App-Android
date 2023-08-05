@@ -14,5 +14,5 @@ data class HomeState(
 sealed class HomeEvent{
     object LoadTodosAdded: HomeEvent()
     object LoadTodoCompleted: HomeEvent()
-    data class AddNewTodo(val todo: TodoDto): HomeEvent()
+    data class AddNewTodo(val todo: TodoDto, val callback: () -> Unit = {}): HomeEvent()
 }
