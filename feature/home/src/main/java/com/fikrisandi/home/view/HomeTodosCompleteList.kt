@@ -67,8 +67,7 @@ fun HomeTodosCompleteList(
                         .clickable { onShowTodoDetail(data) },
                     title = data.title,
                     description = data.description,
-                    days = "Today",
-                    time = "15.40"
+                    time = data.dueDate
                 )
             }
         }

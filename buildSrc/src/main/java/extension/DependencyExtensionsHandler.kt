@@ -98,6 +98,7 @@ fun DependencyHandler.addCommonDependency() {
     implementation(SupportLibs.CoroutineAndroid)
     implementation(SupportLibs.CoroutineCore)
     implementation(SupportLibs.CoroutineCore)
+    implementation(SupportLibs.datetimeKtx)
 }
 
 fun DependencyHandler.addUiDependency(){

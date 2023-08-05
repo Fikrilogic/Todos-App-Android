@@ -92,7 +92,7 @@ fun HomeTodosLastAdded(
                                     .fillMaxWidth(1f)
                                     .heightIn(min = 150.dp)
                                     .clickable { onShowDetailTodo(it) },
-                                title = it.title, date = it.dueDate.toString(), description = it.description
+                                title = it.title, date = it.dueDate, description = it.description
                             )
                         }
                     }

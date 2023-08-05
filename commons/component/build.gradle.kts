@@ -1,4 +1,5 @@
 import extension.THEME
+import extension.FRAMEWORK
 
 plugins {
     id("commons.android-core")
@@ -12,4 +13,5 @@ android {
 
 dependencies {
     THEME
+    FRAMEWORK
 }

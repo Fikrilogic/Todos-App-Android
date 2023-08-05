@@ -22,18 +22,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fikrisandi.framework.extension.toDaysWithMontAndYear
+import com.fikrisandi.framework.extension.toHoursAndMinute
 import com.fikrisandi.theme.R
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosTypography
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @Composable
 fun TodosCardHorizontalWidget(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    days: String,
-    time: String
+    time: Long,
 ) {
     OutlinedCard(modifier = modifier) {
         Column(
@@ -90,12 +94,13 @@ fun TodosCardHorizontalWidget(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                val timeFormatting = Instant.fromEpochMilliseconds(time).toLocalDateTime(TimeZone.currentSystemDefault())
                 Text(
-                    text = days,
+                    text =  timeFormatting.toDaysWithMontAndYear(),
                     style = TodosTypography.bodySmall,
                 )
                 Text(
-                    text = time,
+                    text = timeFormatting.toHoursAndMinute(),
                     style = TodosTypography.bodySmall,
                 )
             }
@@ -131,8 +136,7 @@ fun CardHorizontalWidgetPreview() {
         TodosCardHorizontalWidget(
             modifier = Modifier.fillMaxWidth(),
             title = "Go To Station",
-            time = "11:24",
-            days = "Today",
+            time = 1691280000000L,
             description = stringResource(
                 R.string.default_string
             )

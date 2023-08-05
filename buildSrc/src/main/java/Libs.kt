@@ -6,6 +6,7 @@ object SupportLibs {
     const val Material = "com.google.android.material:material:1.11.0-alpha01"
     const val ActivityKtx = "androidx.activity:activity-ktx:1.4.0"
     const val viewmodelRuntime = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.lifecycleRuntime}"
+    const val datetimeKtx = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 }
 
 object ComposeLibs {

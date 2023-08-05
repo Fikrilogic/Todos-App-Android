@@ -38,10 +38,14 @@ import com.fikrisandi.theme.TodosTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoContentSheetScreen(modifier: Modifier = Modifier, onCancel: () -> Unit, onSubmit: (TodoDto) -> Unit) {
+fun TodoContentSheetScreen(
+    modifier: Modifier = Modifier,
+    onCancel: () -> Unit,
+    onSubmit: (TodoDto) -> Unit
+) {
 
     val dateState = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-    var formState by remember{ mutableStateOf(TodoDto()) }
+    var formState by remember { mutableStateOf(TodoDto()) }
 
     Scaffold(
         modifier = modifier,
@@ -78,7 +82,7 @@ fun TodoContentSheetScreen(modifier: Modifier = Modifier, onCancel: () -> Unit, 
                     OutlinedTextField(modifier = Modifier.fillMaxWidth(),
                         value = formState.title,
                         onValueChange = {
-                                        formState = formState.copy(title = it)
+                            formState = formState.copy(title = it)
                         },
                         placeholder = { Text("Add Title", color = TodosColors.primary) })
                 }
@@ -95,7 +99,7 @@ fun TodoContentSheetScreen(modifier: Modifier = Modifier, onCancel: () -> Unit, 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = formState.description,
-                        onValueChange = {formState = formState.copy(description = it)},
+                        onValueChange = { formState = formState.copy(description = it) },
                         placeholder = { Text("Add Description", color = TodosColors.primary) },
                         maxLines = 4
                     )
@@ -113,6 +117,8 @@ fun TodoContentSheetScreen(modifier: Modifier = Modifier, onCancel: () -> Unit, 
                         style = TodosTypography.labelLarge,
                         color = TodosColors.primary
                     )
+                }, dateValidator = {
+                    it >= System.currentTimeMillis()
                 })
 
                 Row(
@@ -131,7 +137,7 @@ fun TodoContentSheetScreen(modifier: Modifier = Modifier, onCancel: () -> Unit, 
                     Spacer(modifier = Modifier.weight(.01f))
                     FilledTonalButton(
                         onClick = {
-                                  onSubmit.invoke(formState.copy(dueDate = dateState.selectedDateMillis.orZero()))
+                            onSubmit.invoke(formState.copy(dueDate = dateState.selectedDateMillis.orZero()))
                         },
                         modifier = Modifier
                             .fillMaxWidth()

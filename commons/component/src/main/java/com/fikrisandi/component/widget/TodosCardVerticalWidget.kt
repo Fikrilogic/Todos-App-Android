@@ -27,17 +27,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fikrisandi.framework.extension.toDaysWithMontAndYear
 import com.fikrisandi.theme.R
 import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosTypography
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 
 @Composable
 fun TodosCardVerticalWidget(
     modifier: Modifier = Modifier,
     title: String,
-    date: String,
+    date: Long,
     description: String
 ) {
     OutlinedCard(
@@ -62,8 +66,10 @@ fun TodosCardVerticalWidget(
                 Column(
                     modifier = Modifier
                 ) {
+                    val timeFormatting = Instant.fromEpochMilliseconds(date).toLocalDateTime(
+                        TimeZone.currentSystemDefault())
                     Text(text = title, style = TodosTypography.titleLarge)
-                    Text(text = date, style = TodosTypography.titleSmall)
+                    Text(text = timeFormatting.toDaysWithMontAndYear(), style = TodosTypography.titleSmall)
                 }
 
                 Column(modifier = Modifier
@@ -122,7 +128,7 @@ fun CardVerticalWidgetPreview() {
                 .width(200.dp)
                 .wrapContentHeight(),
             title = "Todos Today",
-            date = "12/07/2022",
+            date = 1691280000000,
             description = stringResource(id = R.string.default_string)
         )
     }

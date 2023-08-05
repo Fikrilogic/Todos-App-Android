@@ -13,7 +13,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -28,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fikrisandi.framework.extension.toDaysWithMontAndYear
+import com.fikrisandi.framework.extension.toHoursAndMinute
 import com.fikrisandi.model.dto.todo.TodoDto
 import com.fikrisandi.provider.EmptyNavigationProvider
 import com.fikrisandi.provider.NavigationProvider
@@ -36,6 +37,9 @@ import com.fikrisandi.theme.TodoTheme
 import com.fikrisandi.theme.TodosColors
 import com.fikrisandi.theme.TodosShape
 import com.fikrisandi.theme.TodosTypography
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,6 +105,10 @@ fun TodoDetailContent(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            val timeFormatting =
+                                Instant.fromEpochMilliseconds(state.dueDate).toLocalDateTime(
+                                    TimeZone.currentSystemDefault()
+                                )
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Text(
                                     text = "Due Date",
@@ -108,7 +116,7 @@ fun TodoDetailContent(
                                     color = TodosColors.background
                                 )
                                 Text(
-                                    text = "06 August 2023",
+                                    text = "${timeFormatting.toDaysWithMontAndYear()} ${timeFormatting.toHoursAndMinute()}",
                                     style = TodosTypography.bodyLarge,
                                     color = TodosColors.background
                                 )
@@ -129,9 +137,11 @@ fun TodoDetailContent(
                     }
                 }
 
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
                     FilledTonalButton(
                         onClick = onDeleteClick,
                         modifier = Modifier.fillMaxWidth(),
