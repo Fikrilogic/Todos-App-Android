@@ -53,7 +53,6 @@ fun HomeTodosLastAdded(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(text = "On Proggress", style = TodosTypography.headlineSmall)
-                Text(text = "(10)", style = TodosTypography.headlineSmall)
             }
 
             Row(

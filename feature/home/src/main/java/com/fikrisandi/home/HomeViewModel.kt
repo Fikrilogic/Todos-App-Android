@@ -81,6 +81,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
     private fun addNewTodo(todo: TodoDto, callback: () -> Unit) = safeLaunch {
         val params = AddTodo.Params(todo)
         call(addTodo(params)) {

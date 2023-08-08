@@ -22,7 +22,13 @@ interface TodoDao: BaseDao<TodoEntity> {
     @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date < :date")
     suspend fun getIsCompleted(date: Long): List<TodoEntity>
 
-    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date >= :date ORDER BY due_date ASC  LIMIT :limit OFFSET :offset")
+    @Query("SELECT COUNT(*) FROM ${TodoEntity.NAME} WHERE due_date < :date")
+    suspend fun getIsCompletedCount(date: Long): Int
+
+    @Query("SELECT * FROM ${TodoEntity.NAME} WHERE due_date >= :date ORDER BY due_date ASC LIMIT :limit OFFSET :offset")
     suspend fun getLastAdded(limit: Int, offset: Int, date: Long): List<TodoEntity>
+
+    @Query("SELECT COUNT(*) FROM ${TodoEntity.NAME} WHERE due_date >= :date")
+    suspend fun getLastAddedCount(date: Long): Int
 
 }

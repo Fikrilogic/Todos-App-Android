@@ -18,12 +18,20 @@ class TodoRepositoryImpl @Inject constructor(private val dao: TodoDao): TodoRepo
         return dao.getLastAdded(limit, offset, System.currentTimeMillis())
     }
 
+    override suspend fun getLastAddedCount(): Int {
+        return dao.getLastAddedCount(System.currentTimeMillis())
+    }
+
     override suspend fun getLastCompleted(limit: Int, offset: Int): List<TodoEntity> {
         return dao.getIsCompleted(limit, offset, System.currentTimeMillis())
     }
 
     override suspend fun getLastCompleted(): List<TodoEntity> {
         return dao.getIsCompleted(System.currentTimeMillis())
+    }
+
+    override suspend fun getLastCompletedCount(): Int {
+        return dao.getIsCompletedCount(System.currentTimeMillis())
     }
 
     override suspend fun getById(id: Int): TodoEntity? {

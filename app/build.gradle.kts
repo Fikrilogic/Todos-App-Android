@@ -2,6 +2,7 @@ import extension.addCommonDependency
 import extension.addComposeDependency
 import extension.addDestinationDependency
 import extension.addHiltDependency
+import extension.addAndroidTestDependency
 import extension.addModule
 
 plugins {
@@ -75,6 +76,7 @@ dependencies {
     addComposeDependency()
     addHiltDependency()
     addDestinationDependency()
+    addAndroidTestDependency()
 //    implementation("androidx.core:core-ktx:1.9.0")
 //    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 //    implementation("androidx.activity:activity-compose:1.7.0")
